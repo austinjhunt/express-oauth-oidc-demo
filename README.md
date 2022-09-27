@@ -10,7 +10,7 @@ The goal of this lightweight ExpressJS app is to demonstrate the OpenID Connect 
 
 #### GCP
 
-First things first, I created a new project in Google called **Simple OAuth Demo**, configured a consent screen for it when authorized JS origin `http://localhost:8080` and redirect URL `http://localhost:8080/redirect_uri` (which is the Express route that handles the redirect back from the consent screen). I then created an OAuth client ID in the credentials screen within the project, and downloaded the credentials JSON file (stored as a gitignored config.js in the repo).
+First things first, I created a new project in Google called **Simple OAuth Demo**, configured a consent screen for it with authorized JS origin `http://localhost:8080` and redirect URL `http://localhost:8080/redirect_uri` (which is the Express route that handles the redirect back from the consent screen). I then created an OAuth client ID in the credentials screen within the project, and downloaded the credentials JSON file (stored as a gitignored config.js in the repo).
 
 From here, I moved to the Express development.
 
