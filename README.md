@@ -57,7 +57,7 @@ If the user clicks `Continue`, they then get prompted with the OAuth Consent Scr
 
 ![consent screen prompt](img/consentscreen.png)
 
-After the consent screen, Google then redirects the user back to the configured `redirect_uri` for the client which in the case of this app is the `/redirect_uri` route handled by the following code in [index.js](index.js). When redirected to `/redirect_uri` by Google, two important query parameters are included: `state` and `code`. The first thing that happens here is the verification of the state token by comparing it against the state token which was previously generated when starting the flow. If the token matches, we take the `code` query parameter (which is a one-time authorization code) and exchange it with Google's token endpoint for an access token and an ID token. We also update the user's session to indicate the authorization. Moreover, we use the newly obtained access token to hit the (About API endpoint](https://developers.google.com/drive/api/v3/reference/about) to pull some basic Google Account information about the user (namely first name and email address).
+After the consent screen, Google then redirects the user back to the configured `redirect_uri` for the client which in the case of this app is the `/redirect_uri` route handled by the following code in [index.js](index.js).
 
 ```
 
@@ -102,6 +102,10 @@ app.get("/redirect_uri", (req, res) => {
   }
 });
 ```
+
+Note that in this example we're assuming that the user has consented to the requested permissions/scopes before getting to this point, but usually this is the point where you want to check which permissions were granted and which ones were not such that portions of your system or application using denied scopes can be disabled for the user.
+
+When redirected to `/redirect_uri` by Google, two important query parameters are included: `state` and `code`. The first thing that happens here is the verification of the state token by comparing it against the state token which was previously generated when starting the flow. If the token matches, we take the `code` query parameter (which is a one-time authorization code) and exchange it with Google's token endpoint for an access token and an ID token. We also update the user's session to indicate the authorization. Moreover, we use the newly obtained access token to hit the (About API endpoint](https://developers.google.com/drive/api/v3/reference/about) to pull some basic Google Account information about the user (namely first name and email address).
 
 With that information pulled from Google via the API, EJS is then used to embed that information into the front end view. EJS is also used to conditionally show a button for pulling Google Drive File Information for users who are authorized (by embedding the boolean `authorized` session variable into the EJS view). If the user is authorized, they see the button (really a link to the `/get-files` route) to pull the basic metadata about their Google Drive Files.
 ![]
