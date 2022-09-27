@@ -1,0 +1,12 @@
+html,
+body {
+  height: 100%;
+}
+a.btn {
+  box-shadow: 10px 10px 10px blue;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  text-decoration: none;
+  color: red;
+  background-color: yellow;
+}

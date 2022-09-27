@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple OpenID Connect Authorization Demo with Google Drive, created by Austin Hunt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-fluid text-start mt-5">
+        <h1>An ExpressJS OpenID Connect Authorization Flow Demo</h1>
+        <p>
+            The goal of this lightweight ExpressJS app is to demonstrate the OpenID Connect Authorization flow against a Google Cloud Platform application created with very restricted read-only Google Drive scopes.
+            More specifically, it follows the official <a href="https://developers.google.com/identity/protocols/oauth2/openid-connect">Google OAuth 2.0 implementation for authentication</a> which happens to <strong>
+                conform to the <a href="https://openid.net/connect/">OpenID Connect specification</a>, and is <a href="https://openid.net/certification/">OpenID Certified</a>. In short, Google's OAuth 2.0 APIs can be used for both authentication (OIDC) and authorization (OAuth).
+            </strong>
+            When you click the below button, you should be prompted with a Google login screen, and after authenticating (perhaps with MFA if you have that configured on your Google account), you should see a consent screen for an app titled <strong>OpenID Connect Authorization Flow Demonstration</strong>, which requests access to:
+            <ul>
+                <li> See information about your Google Drive files.
+                </li>
+                <li>See your personal info, including any personal info you've made publicly available </li>
+                <li>See your primary Google Account email address</li>
+            If you grant access, the OIDC flow will complete and display some basic information about the content of your Google drive account using the obtained access token from the flow.
+        </p>
+
+    </div>
+    <% if (typeof authorized === 'undefined' || !authorized) { %>
+        <div class="container text-center m-5 mb-1 p-3 h-25 ">
+            <p>Click the button below to start the flow.</p>
+            <div><a class="btn btn-lg" href="/start-flow">Start OIDC Flow with Google Drive</a></div>
+        </div>
+    <% } else { %>
+        <div class="container  text-center m-5 p-4 h-50 ">
+            <h2>Authorization Complete</h2>
+            <p><span><%= displayName %></span> | <span><%= emailAddress %></span> </p>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 ">
+                <button onclick="getFiles()" class="btn btn-md btn-primary" id="get-google-info-button">Get Google Drive File Info</button>
+                </div>
+                <div class="col-sm-12 col-md-6 ">
+                    <button onclick="clearFiles()" class="btn btn-md btn-danger" id="clear-files">Clear Google Drive File Info</button>
+                </div>
+
+            </div>
+            <div class="row mt-4 " id="file-info"></div>
+        </div>
+    <% } %>
+<script>
+    let clearFiles = () => {
+        document.getElementById('file-info').innerHTML  = '';
+    }
+
+    let getFiles = () => {
+        fetch('/get-files', {method: 'GET'})
+        .then(response=>response.json())
+        .then(data => {
+            let fileInfoContainer = document.getElementById('file-info');
+            if (data.errors){
+                fileInfoContainer.insertAdjacentHTML( 'beforeend',
+                    `
+                    <strong>Error ${data.code}: ${data.message}</strong>
+                    <div><a class="btn btn-lg" href="/start-flow">Restart OIDC Flow</a></div>
+                    `
+                )
+            }
+            else {
+                data.forEach(file => {
+                    let fileElem = `
+                    <div class="file rounded bg-info col-sm-12 col-md-6 col-lg-4">
+                        <strong>${file.name}</strong>
+                        <p>MimeType: ${file.mimeType}</p>
+                    </div>
+                    `;
+                    fileInfoContainer.insertAdjacentHTML('beforeend', fileElem);
+                });
+            }
+        })
+        .catch(e=>{console.log(e)})
+    }
+</script>
+</body>
+
+</html>

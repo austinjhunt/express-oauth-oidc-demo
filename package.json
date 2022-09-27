@@ -1,0 +1,33 @@
+{
+  "name": "express-oauth-flow",
+  "version": "1.0.0",
+  "description": "simple lightweight app for demonstrating use of Google's OAuth 2.0 APIs (which conform to the OIDC specification) for authN and authZ with Express and Google Drive.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/austinjhunt/express-oauth-flow.git"
+  },
+  "keywords": [
+    "oauth",
+    "oidc",
+    "flow",
+    "authn",
+    "authz",
+    "express",
+    "google"
+  ],
+  "author": "Austin Hunt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/austinjhunt/express-oauth-flow/issues"
+  },
+  "homepage": "https://github.com/austinjhunt/express-oauth-flow#readme",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3"
+  }
+}
