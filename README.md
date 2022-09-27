@@ -1,4 +1,4 @@
-# Demonstration of OAuth 2.0 Flow with Express and Google Drive
+# Demonstration of Google's OIDC-conformant OAuth 2.0 Flow with Express and Google Drive
 
 This is a simple lightweight app for demonstrating use of Google's OAuth 2.0 APIs (which conform to the OIDC specification) for authN and authZ with Express and Google Drive.
 
